@@ -37,7 +37,7 @@ cd FinalExamCIT
 📂 Project Structure
 
 project-folder/
-│── client/
+│── client/ <br>
 │   └── .env.example
 │── server/
 │   └── .env.example
