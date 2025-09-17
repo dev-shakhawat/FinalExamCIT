@@ -3,9 +3,6 @@ const Course = require("../../models/Course");
 
 async function create (req, res)  {
 try {
-
-  console.log(req.user);
-
   
     const course = new Course({
       creator: req.user._id,
@@ -14,6 +11,7 @@ try {
       price: req.body.price,
       instructor: req.body.instructor,
       category: req.body.category,
+      isPopular: req.body.isPopular,
       thumbnailImage: req.file ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` : null,
     });
     await course.save();

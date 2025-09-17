@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
-import { FooterLinksSection } from '../../screens/ElementLight/sections/FooterLinksSection/FooterLinksSection'
-import Header from '../../screens/ElementLight/sections/Header/Header'
+import React, { useEffect } from 'react' 
 import { Outlet } from 'react-router'
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { userSet } from '../../redux/slices/userSlice';
+import Header from './Header';
+import Nav from './Nav';
+import { Footer } from './Footer';
 
 export default function Layout() {
   const dispatch = useDispatch();
@@ -24,8 +25,9 @@ export default function Layout() {
   return (
     <div>
         <Header/> 
+        <Nav/>
         <Outlet/>
-        <FooterLinksSection/>
+        <Footer/>
     </div>
   )
 }

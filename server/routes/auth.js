@@ -5,6 +5,7 @@ const registration = require('../controllers/auth/register');
 const login = require('../controllers/auth/login');
 const getuserData = require('../controllers/auth/getUser');
 const { authenticate } = require('../middleware/auth');
+const logout = require('../controllers/auth/logout');
 
 const router = express.Router();
 
@@ -13,6 +14,10 @@ router.post('/register', registration);
 
 // Login
 router.post('/login', login);
+
+
+// logout
+router.get('/logout', logout);
 
 
 // get user data

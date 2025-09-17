@@ -17,7 +17,7 @@ async function registration(req, res) {
 
     // set cookie
   res.cookie("FinalExamCIT", token, {
-    httpOnly: true, // JS access নেই
+    httpOnly: true, // JS access  
     secure: false, // HTTPS only
     sameSite: "strict", // CSRF protection
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days

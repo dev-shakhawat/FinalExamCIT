@@ -16,10 +16,15 @@ export default function Login({setIsLogin}) {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", form);
-      localStorage.setItem("token", res.data.token); // ✅ JWT save
-      localStorage.setItem("role", res.data.user.role); // role save
-      navigate("/"); // login successful হলে home এ redirect
+      const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/login`, form  , { withCredentials: true });
+      console.log(res);
+      
+      // login successful 
+      setTimeout(() => {
+        setIsLogin(true);
+        navigate("/account");
+        window.location.reload();
+      } , 100);
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
     }

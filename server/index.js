@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const authRoutes = require('./routes/auth');
 const courseRoutes = require('./routes/courses');
 const storyRoutes = require('./routes/successStories');
+const categoryRoutes = require('./routes/category');
 const dbConnect = require('./configs/dbConfig');
 
 
@@ -28,6 +29,7 @@ dbConnect()
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/success-stories', storyRoutes);
+app.use('/api/categories', categoryRoutes);
  
 
 

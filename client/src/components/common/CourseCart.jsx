@@ -1,30 +1,26 @@
 import axios from "axios";
 import React from "react";
 import EditCourse from "./EditCourse";
+import { useNavigate } from "react-router";
+import handleDeleteCourse from "../../helpers/deleteCourse";
 
-export default function CourseCart({course , fetchCourses , editingCourse , setEditingCourse}) {
+export default function CourseCart({course , fetchCourses , editingCourse , setEditingCourse , onClick}) {
 
-const handleDeleteCourse = async (id) => {
-    if (!confirm("Are you sure?")) return;
-    try {
-      await axios.delete(`${import.meta.env.VITE_BASE_URL}/api/courses/delete/${id}`, { withCredentials: true }); 
-      fetchCourses();
-    } catch (err) {
-      console.log(err);
-    }
-  };
+ 
 
 
-const handleEditCourse = (course) => {
-    console.log(course);
-    
+
+
+const handleEditCourse = (e , course) => { 
     setEditingCourse(course);
   };
 
 
   
+
+  
   return (
-    <div   className="w-full border rounded-md     ">
+    <div    className="w-full border rounded-md     ">
 
         {/* edit course */}
       {editingCourse?._id === course?._id && (
@@ -37,39 +33,39 @@ const handleEditCourse = (course) => {
 
 
       {/* image */}
-      <img src={course.thumbnailImage} alt="" className="w-full h-40   " />
+      <img onClick={onClick} src={course.thumbnailImage} alt="" className="w-full h-55 cursor-pointer  " />
 
       {/* description */}
-      <div className="bg-gray-200 p-2  ">
+      <div onClick={onClick} className="bg-gray-200 p-2 cursor-pointer   ">
         {/* title */}
         <h2 className=" font-semibold text-xl line-clamp-1   ">
           {course.title}
         </h2>
 
         {/* description */}
-        <p className="text-sm line-clamp-2   ">{course.description}</p>
+        <p className="text-sm line-clamp-2 h-10    ">{course.description}</p>
 
         {/* price */}
         <p className="font-semibold text-base text-red-400  ">
           BDT: {course.price}
         </p>
 
+      </div>
         {/* buttons */}
-        <div className="flex gap-1 mt-3">
+        <div className="flex gap-1   bg-gray-200 p-2">
           <button
-            onClick={() => handleEditCourse(course)}
+            onClick={(e) => handleEditCourse(e ,course)}
             className="px-4 py-1 bg-indigo-600 text-white rounded hover:bg-indigo-700 flex-1 "
           >
             Edit
           </button>
           <button
-            onClick={() => handleDeleteCourse(course._id)}
+            onClick={() => handleDeleteCourse(course._id ,  fetchCourses)}
             className="px-4 py-1 bg-red-600 text-white rounded hover:bg-red-700 flex-1 "
           >
             Delete
           </button>
         </div>
-      </div>
     </div>
   );
 }

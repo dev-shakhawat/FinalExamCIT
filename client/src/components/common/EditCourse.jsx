@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React from 'react'
+import Input from './Input';
+import CategorySelect from './CategorySelect';
 
 export default function EditCourse({editingCourse , setEditingCourse , fetchCourses}) {
 
@@ -38,82 +40,32 @@ const handleUpdateCourse = async (e) => {
 };
 
 
+    console.log(editingCourse);
     
 
 
   return ( 
  
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
     <div className="bg-white p-6 rounded shadow w-full max-w-md">
       <h2 className="text-xl font-semibold mb-4">Edit Course</h2>
       <form
         className="space-y-4" 
       >
-        <input
-          type="text"
-          placeholder="Title"
-          value={editingCourse?.title}
-          onChange={(e) =>
-            setEditingCourse({ ...editingCourse, title: e.target.value })
-          }
-          className="w-full border rounded px-3 py-2"
-          required
-        />
+        <Input value={editingCourse?.title} type={"text"} placeholder="Title" onChange={(e) => setEditingCourse({ ...editingCourse, title: e.target.value })}  />
 
-        <input
-          type="text"
-          placeholder="Description"
-          value={editingCourse?.description}
-          onChange={(e) =>
-            setEditingCourse({ ...editingCourse, description: e.target.value })
-          }
-          className="w-full border rounded px-3 py-2"
-          required
-        />
+        <Input value={editingCourse?.description} type={"text"} placeholder="Description" onChange={(e) => setEditingCourse({ ...editingCourse, description: e.target.value })}  />
+ 
+        <Input value={editingCourse?.price} type={"text"} placeholder="Price" onChange={(e) => setEditingCourse({ ...editingCourse, price: e.target.value })}  />
+ 
+        <Input value={editingCourse?.instructor} type={"text"} placeholder="Instructor"  onChange={(e) => setEditingCourse({ ...editingCourse, instructor: e.target.value })}  />
+        
+        <CategorySelect value={editingCourse?.category} onChange={(e) => setEditingCourse({ ...editingCourse, category: e.target.value })}  />
+ 
+        <Input type={"file"} placeholder="File"  onChange={(e) => setEditingCourse({ ...editingCourse, thumbnailImage: e.target.files[0] })} />
+ 
 
-        <input
-          type="number"
-          placeholder="Price"
-          value={editingCourse?.price}
-          onChange={(e) =>
-            setEditingCourse({ ...editingCourse, price: e.target.value })
-          }
-          className="w-full border rounded px-3 py-2"
-          required
-        />
-
-        <input
-          type="text"
-          placeholder="Instructor"
-          value={editingCourse?.instructor}
-          onChange={(e) =>
-            setEditingCourse({ ...editingCourse, instructor: e.target.value })
-          }
-          className="w-full border rounded px-3 py-2"
-          required
-        />
-
-        <input
-          type="text"
-          placeholder="Category"
-          value={editingCourse?.category}
-          onChange={(e) =>
-            setEditingCourse({ ...editingCourse, category: e.target.value })
-          }
-          className="w-full border rounded px-3 py-2"
-          required
-        />
-
-        <div>
-          <label className="block mb-1 text-sm font-medium">Thumbnail Image</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) =>
-              setEditingCourse({ ...editingCourse, thumbnailImage: e.target.files[0] })
-            }
-          />
-        </div>
+ 
 
         <div className="flex justify-end gap-2">
           <button

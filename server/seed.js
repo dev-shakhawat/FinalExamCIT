@@ -1,65 +1,101 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
+require("dotenv").config();
+const mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
-const User = require('./models/User');
-const Course = require('./models/Course');
-const SuccessStory = require('./models/SuccessStory');
 
-async function seed() {
-  await mongoose.connect(process.env.MONGO_URI);
-  console.log('Connected');
+// db connect
+const dbConnect = require("./configs/dbConfig");
+ 
+// models import
+const User = require("./models/User");
+const Course = require("./models/Course");
+const SuccessStory = require("./models/SuccessStory");
 
-  await User.deleteMany({});
-  await Course.deleteMany({});
-  await SuccessStory.deleteMany({});
+ 
 
-  const adminPass = await bcrypt.hash('admin123', 10);
-  const studentPass = await bcrypt.hash('student123', 10);
+// connect db
+ dbConnect();
 
-  const admin = await User.create({ name: 'Admin User', email: 'admin@lms.com', password: adminPass, role: 'admin' });
-  const author = await User.create({ name: 'Instructor One', email: 'instructor@lms.com', password: studentPass, role: 'student' });
+// seed function
+async function seedData() {
+  try {
+    // remove old data
+    await User.deleteMany();
+    await Course.deleteMany();
+    await SuccessStory.deleteMany();
 
-  const c1 = await Course.create({
-    title: 'MERN Stack Bootcamp',
-    description: 'Full MERN stack practical bootcamp',
-    price: 95000,
-    instructor: admin._id,
-    thumbnailImage: 'https://via.placeholder.com/400x250',
-    isPopular: true,
-    enrollCount: 120
-  });
-  const c2 = await Course.create({
-    title: 'React for Beginners',
-    description: 'Learn React from scratch',
-    price: 35000,
-    instructor: author._id,
-    thumbnailImage: 'https://via.placeholder.com/400x250',
-    isPopular: true,
-    enrollCount: 80
-  });
-  const c3 = await Course.create({
-    title: 'Graphic Design Essentials',
-    description: 'Photoshop & Illustrator basics',
-    price: 25000,
-    instructor: author._id,
-    thumbnailImage: 'https://via.placeholder.com/400x250',
-    isPopular: false,
-    enrollCount: 8
-  });
+    // User create
+    const admin = await User.create({
+      name: "Admin User",
+      email: "admin@demo.com",
+      password: await bcrypt.hash('123456', 10), // hash model pre-save hook 
+      role: "admin"
+    });
 
-  await SuccessStory.create({
-    studentName: 'Arif Rahman',
-    storyText: 'This course changed my career. I got a job within 2 months!',
-    courseName: c1.title
-  });
-  await SuccessStory.create({
-    studentName: 'Sumaiya Khatun',
-    storyText: 'Loved the hands-on approach, great instructor support.',
-    courseName: c2.title
-  });
+    const student = await User.create({
+      name: "Student User",
+      email: "student@demo.com",
+      password: await bcrypt.hash('123456', 10),
+      role: "student"
+    });
 
-  console.log('Seed done');
-  process.exit(0);
+    // Course create
+    const courses = await Course.insertMany([
+      {
+        title: "Web Development Bootcamp",
+        description: "Learn MERN stack from scratch",
+        price: 200,
+        instructor: admin._id,
+        thumbnailImage: "https://bairesdev.mo.cloudinary.net/blog/2023/08/How-to-Choose-the-Right-Programming-Language-for-a-New-Project.jpg?tx=w_1280,q_auto",
+        isPopular: true ,
+        category: "Programming",
+        creator: admin._id
+      },
+      {
+        title: "Graphic Design Mastery",
+        description: "Photoshop, Illustrator, and more",
+        price: 150,
+        instructor: admin._id,
+        thumbnailImage: "https://s44783.pcdn.co/in/wp-content/uploads/sites/3/2022/11/IIMK-ASMP-768x432.jpg.optimal.jpg",
+        isPopular: true,
+        category: "Marketting",
+        creator: admin._id
+      },
+      {
+        title: "Digital Marketing Essentials",
+        description: "SEO, SEM, Social Media Marketing",
+        price: 100,
+        instructor: admin._id,
+        thumbnailImage: "https://ethz.ch/en/studies/bachelor/beginning-your-studies/subject-related-preparation/programming-beginners/_jcr_content/par/fullwidthimage/image.imageformat.1286.1887369971.jpg",
+        category: "Programming",
+        creator: admin._id
+      }
+    ]);
+
+    // Success Stories create
+    const stories = await SuccessStory.insertMany([
+      { 
+        author: admin._id,
+        studentName: "Rakib Hasan",
+        storyText: "I learned MERN and got a remote job!",
+        courseName: "Web Development Bootcamp",
+        image: "https://previews.123rf.com/images/valiza/valiza1909/valiza190900095/129352213-portrait-of-teen-boy-making-thumb-up-gesture-isolated-on-white-background-handsome-caucasian-young.jpg"
+      },
+      {
+        author: admin._id,
+        studentName: "Mitu Akter",
+        storyText: "Designing became my career after this course.",
+        courseName: "Graphic Design Mastery",
+        image: "https://st2.depositphotos.com/1252160/11834/i/950/depositphotos_118343822-stock-photo-cute-boy-with-text-of.jpg"
+      }
+    ]);
+
+    console.log("Seeding Complete");
+    process.exit(0);
+
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
 }
 
-seed().catch(err => console.error(err));
+seedData();

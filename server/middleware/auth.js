@@ -3,7 +3,9 @@ const User = require('../models/User');
 
 exports.authenticate = async (req, res, next) => {
   try {
-    // token আসবে cookie থেকে
+    // token from cookie
+ 
+    
     const token = req.cookies.FinalExamCIT;
 
     if (!token) return res.status(401).json({ message: 'No token, please login' });
