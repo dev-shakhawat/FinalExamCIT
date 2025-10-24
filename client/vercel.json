@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 1,
   "builds": [
     {
       "src": "package.json",
@@ -11,6 +11,5 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ],
-  "outputDirectory": "dist"  // বা "build" - আপনার project অনুসারে
+  ]
 }
